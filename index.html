@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NCV Card - Võ Ngọc Nhân</title>
+  <title>NCV Card – Võ Ngọc Nhân</title>
   <style>
     body {
       margin: 0;
@@ -27,8 +27,8 @@
       display: inline-block;
     }
     .avatar {
-      width: 160px;
-      height: 160px;
+      width: 240px;
+      height: 240px;
       border-radius: 50%;
       border: 5px solid #fff;
       object-fit: cover;
@@ -39,8 +39,8 @@
       bottom: 0;
       right: -40px;
       background: white;
-      border-radius: 2px;
-      padding: 4px;
+      border-radius: 1px;
+      padding: 2px;
       box-shadow: 0 0 6px rgba(0,0,0,0.1);
     }
 
@@ -113,6 +113,7 @@
     .role-section, .icon-links {
       margin-top: 20px;
     }
+
     .role-item {
       display: flex;
       align-items: center;
@@ -150,6 +151,7 @@
       font-size: 12px;
       width: 60px;
       color: #000;
+      cursor: pointer;
     }
 
     .icon-links img {
@@ -161,7 +163,7 @@
     .language-switch-fixed {
       position: fixed;
       top: 10px;
-      right: 10px;
+      right: 600px;
       z-index: 1000;
       display: flex;
       gap: 8px;
@@ -183,23 +185,47 @@
     .language-switch-fixed .flag-icon:hover {
       transform: scale(1.1);
     }
+
+    /* Popup hiển thị ảnh */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+    }
+    .popup img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.9);}
+      to {opacity: 1; transform: scale(1);}
+    }
   </style>
 </head>
 <body>
-  <div class="language-switch-fixed">
-    <img src="https://flagcdn.com/w40/vn.png" alt="Tiếng Việt" title="Tiếng Việt" onclick="switchLang('vi')" class="flag-icon">
-    <img src="https://flagcdn.com/w40/us.png" alt="English" title="English" onclick="switchLang('en')" class="flag-icon">
-  </div>
-
   <div class="container">
+    <div class="language-switch-fixed">
+      <img src="https://flagcdn.com/w40/vn.png" alt="Tiếng Việt" title="Tiếng Việt" onclick="switchLang('vi')" class="flag-icon">
+      <img src="https://flagcdn.com/w40/us.png" alt="English" title="English" onclick="switchLang('en')" class="flag-icon">
+    </div>
     <div class="avatar-box">
       <img src="https://i.ibb.co/sSsbjNq/Jayden.jpg" alt="Avatar" class="avatar">
-      <div class="qr-top">
-        <img src="https://i.ibb.co/hJ8jKMK2/Jayden.jpg" alt="QR" width="80">
-      </div>
+    <div class="qr-top" onclick="showImagePopup('https://i.ibb.co/hJ8jKMK2/Jayden.jpg')">
+      <img src="https://i.ibb.co/hJ8jKMK2/Jayden.jpg" alt="QR" width="80" style="cursor: zoom-in;">
     </div>
-    <h1 id="title">Võ Ngọc Nhân</h1>
-    <div class="subtitle">Overseas Development</div>
+    </div>
+    <h1 id="title" onclick="showImagePopup('https://i.ibb.co/fdr6N735/Jayden-min.jpg')" style="cursor: zoom-in;">
+      Võ Ngọc Nhân
+    </h1>
+    <div class="subtitle">Overseas Sales</div>
     <a href="tel:+84 903 453 808" class="phone-button">📞 +84 903 453 808</a>
 
     <div class="share-buttons">
@@ -208,70 +234,43 @@
     </div>
 
     <iframe width="560" height="315" src="https://www.youtube.com/embed/J0MAmvy7y8k?si=MqncRvvtpViXuCQT" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
-
+    
     <div class="video-button" id="consultButton">Đăng Ký Tư Vấn</div>
 
     <div class="info" id="description">
-      * Có kinh nghiệm ở vị trí Sales Overseas trong ngành logistics, phụ trách thị trường Trung Quốc, Ấn Độ và các tuyến khác.<br>
-      * Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ.<br>
+        * Có kinh nghiệm ở vị trí Sales Overseas trong ngành logistics, phụ trách thị trường Trung Quốc, Ấn Độ và các tuyến khác.<br>
+       * Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ.
+
     </div>
 
     <div class="role-section">
-      <div class="role-item"><img src="https://i.ibb.co/VY0kfHdv/Logo-Nhon-My-700x700-2-150x150.png"><div class="role-text" id="role1">Sales Overseas – Công ty Long Hoàng Logistics</div><span>🔗</span></div>
+      <div class="role-item">
+        <img src="https://i.ibb.co/VY0kfHdv/Logo-Nhon-My-700x700-2-150x150.png">
+        <div class="role-text" id="role1">Overseas Sales – Công ty Long Hoàng Logistics</div>
+        <span>🔗</span>
+      </div>
     </div>
 
     <div class="icon-links">
-      <a href="https://zalo.me/0903453808" target="_blank">
-        <img src="https://i.ibb.co/d4nRhVQV/Zalo.png" alt="Zalo" border="0"/>
-        <span>Zalo</span>
-      </a>
-      <a href="https://i.ibb.co/F4T66yKh/Jayden-Whatapps.jpg" target="_blank">
-        <img src="https://i.ibb.co/XxqRB3Qg/Whatsapp.png" alt="Whatsapp" border="0"/>
-        <span>WhatsApp</span>
-      </a>
-      <a href="https://i.ibb.co/CsQwSST7/Jayden-Wechat.jpg" target="_blank">
-        <img src="https://i.ibb.co/Zz41gSrk/Wechat.png" alt="Wechat" border="0"/>
-        <span>WeChat ID</span>
-      </a>
-      <a href="mailto:jacky@longhoanglogistics.com" target="_blank">
-        <img src="https://i.ibb.co/nqyMXyNM/Email.png" alt="Email" border="0"/>
-        <span>Email</span>
-      </a>
-      <a href="https://maps.app.goo.gl/ZSVFYotTCuGWNQmW8" target="_blank">
-        <img src="https://i.ibb.co/7dTZHSwV/Map.png" alt="Map" border="0"/>
-        <span>Địa Chỉ</span>
-      </a>
-      <a href="https://www.longhoanglogistics.com" target="_blank">
-        <img src="https://i.ibb.co/Gf69QR4R/Website.png" alt="Website" border="0"/>
-        <span>Website</span>
-      </a>
-      <a href="https://drive.google.com/file/d/1wyPCBaCLTiUx3aWMwIX3X1WryfnTL-Lp/view?usp=drive_link" target="_blank">
-        <img src="https://i.ibb.co/VY01h09d/Profile.png" alt="Profile" border="0"/>
-        <span>Profile</span>
-      </a>
-      <a href="https://www.facebook.com/share/1SwQWcGDNp/" target="_blank">
-        <img src="https://i.ibb.co/67VF7N5R/Facebook.png" alt="Facebook" border="0"/>
-        <span>Facebook</span>
-      </a>
-      <a href="https://www.tiktok.com/@jydn111_?_t=ZS-8ycWPn5Mth2&_r=1" target="_blank">
-        <img src="https://i.ibb.co/cStFGVqG/Tiktok.png" alt="Tiktok" border="0"/>
-        <span>TikTok</span>
-      </a>
-      <a href="https://www.instagram.com/jden0_111?igsh=MjYxbnVxbDRsOTh1" target="_blank">
-        <img src="https://i.ibb.co/39gCrw9n/Instagram.png" alt="Instagram" border="0"/>
-        <span>Instagram</span>
-      </a>
-      <a href="https://nhantien.momo.vn/hoangkimberry" target="_blank">
-        <img src="https://i.ibb.co/KpRgSv04/Momo.png" alt="Momo" border="0"/>
-        <span>Momo</span>
-      </a>
-      <a href="https://i.ibb.co/zVjxK9Jw/Jayden-tcb.jpg" target="_blank">
-        <img src="https://i.ibb.co/FktVzW2z/Tcb.png" alt="Techcombank" border="0"/>
-        <span>TCB</span>
-      </a>
+      <a href="https://zalo.me/0903 453 808" target="_blank"><img src="https://i.ibb.co/d4nRhVQV/Zalo.png"/><span>Zalo</span></a>
+      <a href="https://i.ibb.co/F4T66yKh/Jayden-Whatapps.jpg" target="_blank"><img src="https://i.ibb.co/XxqRB3Qg/Whatsapp.png"/><span>WhatsApp</span></a>
+      <a href="https://i.ibb.co/CsQwSST7/Jayden-Wechat.jpg"><img src="https://i.ibb.co/Zz41gSrk/Wechat.png"/><span>WeChat</span></a>
+      <a href="mailto:Jacky@longhoanglogistics.com"><img src="https://i.ibb.co/nqyMXyNM/Email.png"/><span>Email</span></a>
+      <a href="https://maps.app.goo.gl/ZSVFYotTCuGWNQmW8" target="_blank"><img src="https://i.ibb.co/7dTZHSwV/Map.png"/><span>Địa Chỉ</span></a>
+      <a href="https://www.longhoanglogistics.com" target="_blank"><img src="https://i.ibb.co/Gf69QR4R/Website.png"/><span>Website</span></a>
+      <a href="https://drive.google.com/file/d/1wyPCBaCLTiUx3aWMwIX3X1WryfnTL-Lp/view?usp=drive_link" target="_blank"><img src="https://i.ibb.co/VY01h09d/Profile.png"/><span>Profile</span></a>
+      <a href="https://www.facebook.com/share/1SwQWcGDNp/" target="_blank"><img src="https://i.ibb.co/67VF7N5R/Facebook.png"/><span>Facebook</span></a>
+      <a href="https://www.tiktok.com/@jydn111_?_t=ZS-8ycWPn5Mth2&_r=1" target="_blank"><img src="https://i.ibb.co/cStFGVqG/Tiktok.png"/><span>TikTok</span></a>
+      <a href="https://www.instagram.com/jden0_111?igsh=MjYxbnVxbDRsOTh1" target="_blank"><img src="https://i.ibb.co/39gCrw9n/Instagram.png"/><span>Instagram</span></a>
+      <a href="https://nhantien.momo.vn/" target="_blank"><img src="https://i.ibb.co/KpRgSv04/Momo.png"/><span>Momo</span></a>
+      <a href=""><img src="https://i.ibb.co/WNDG8rdx/Vietcombank.png"/><span>VCB</span></a>
+      <a href="https://i.ibb.co/zVjxK9Jw/Jayden-tcb.jpg"><img src="https://i.ibb.co/FktVzW2z/Tcb.png"/><span>TCB</span></a>
     </div>
+  </div>
 
-    <!-- ... -->
+  <!-- Popup ảnh -->
+  <div id="imagePopup" class="popup" onclick="closePopup()">
+    <img id="popupImage" src="" alt="Preview">
   </div>
 
   <script>
@@ -280,21 +279,18 @@
         title: "Võ Ngọc Nhân",
         description: `
         * Có kinh nghiệm ở vị trí Sales Overseas trong ngành logistics, phụ trách thị trường Trung Quốc, Ấn Độ và các tuyến khác.<br>
-      * Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ.`,
+       * Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ.
+`,
         consult: "Đăng Ký Tư Vấn",
-        roles: [
-          "Sales Overseas – Công ty Long Hoàng Logistics"
-        ]
+        roles: ["Overseas Sales – Công ty Long Hoàng Logistics"]
       },
       en: {
-        title: "Mr. Jayden Vo",
+        title: "[[ NAME2]",
         description: `
         * Experience as an Overseas Sales Representative in the logistics industry, responsible for the Chinese, Indian, and other trade lanes.<br>
         * Responsibilities included sourcing international clients, quoting FCL/LCL and air freight services, tracking shipments, and coordinating with the documentation and operations teams to ensure on-time delivery.`,
         consult: "Register for Consultation",
-        roles: [
-          "Sales Overseas – Long Hoang Logistics Company"
-        ]
+        roles: ["Overseas Sales – Long Hoang Logistics Company"]
       }
     };
 
@@ -302,7 +298,6 @@
       document.getElementById("title").innerHTML = translations[lang].title;
       document.getElementById("description").innerHTML = translations[lang].description;
       document.getElementById("consultButton").innerHTML = translations[lang].consult;
-
       for (let i = 0; i < translations[lang].roles.length; i++) {
         document.getElementById(`role${i + 1}`).innerHTML = translations[lang].roles[i];
       }
@@ -312,16 +307,38 @@
       const blob = new Blob([`
 BEGIN:VCARD
 VERSION:3.0
-FN:Ngoc Nhan
-TEL:0903453808
-EMAIL:Jayden@longhoanglogistics.com
+FN: Võ Ngọc Nhân
+TEL:0903 453 808
+EMAIL:Jacky@longhoanglogistics.com
 END:VCARD
       `], { type: 'text/vcard' });
-
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = 'Vongocnhan.vcf';
+      link.download = 'Võ Ngọc Nhân.vcf';
       link.click();
+    }
+
+    // --- Popup ảnh tự động ---
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll(".icon-links a").forEach(link => {
+        const href = link.getAttribute("href");
+        if (href && (href.endsWith(".jpg") || href.endsWith(".png") || href.endsWith(".jpeg"))) {
+          link.addEventListener("click", function(e) {
+            e.preventDefault();
+            showImagePopup(href);
+          });
+        }
+      });
+    });
+
+    function showImagePopup(url) {
+      const popup = document.getElementById("imagePopup");
+      document.getElementById("popupImage").src = url;
+      popup.style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("imagePopup").style.display = "none";
     }
   </script>
 </body>
