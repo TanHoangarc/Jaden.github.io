@@ -1,822 +1,345 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#B2F2BB" />
-    <title>NCV Card - Lâm Ngọc Vũ</title>
-    
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel để dịch JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#B2F2BB',
-              secondary: '#8b004f',
-              accent: '#0033cc',
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.3s ease-out',
-              'slide-up': 'slideUp 0.4s ease-out',
-            },
-            keyframes: {
-              fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-              slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }
-            }
-          },
-        },
-      }
-    </script>
-    <style>
-      body { background-color: #E5E5E5; margin: 0; padding: 0; }
-      .no-scrollbar::-webkit-scrollbar { display: none; }
-      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NCV Card – Võ Ngọc Nhân</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #E5E5E5;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      background-color: #B2F2BB;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .avatar-box {
+      position: relative;
+      display: inline-block;
+    }
+    .avatar {
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      border: 5px solid #fff;
+      object-fit: cover;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .qr-top {
+      position: absolute;
+      bottom: 0;
+      right: -40px;
+      background: white;
+      border-radius: 1px;
+      padding: 2px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin: 10px 0 4px;
+      font-size: 22px;
+      color: #333;
+    }
+
+    .subtitle {
+      color: #357;
+      margin-bottom: 16px;
+    }
+
+    .phone-button {
+      background-color: #8b004f;
+      color: white;
+      font-size: 18px;
+      padding: 12px;
+      border-radius: 40px;
+      text-decoration: none;
+      display: inline-block;
+      width: 80%;
+      margin-bottom: 16px;
+    }
+
+    .share-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      padding: 10px 0;
+      background-color: #f8f8f8;
+      border-radius: 12px;
+    }
+
+    .share-buttons div {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    iframe {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+
+    .video-button {
+      background-color: #0033cc;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: inline-block;
+      margin: 10px auto;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .info {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .role-section, .icon-links {
+      margin-top: 20px;
+    }
+
+    .role-item {
+      display: flex;
+      align-items: center;
+      background: #f0fff0;
+      border-radius: 10px;
+      padding: 8px;
+      margin: 6px 0;
+      justify-content: space-between;
+    }
+    .role-item img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    .role-text {
+      flex: 1;
+      text-align: left;
+      margin-left: 10px;
+      font-size: 14px;
+    }
+
+    .icon-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .icon-links a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      font-size: 12px;
+      width: 60px;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .icon-links img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 4px;
+    }
+
+    .language-switch-fixed {
+      position: fixed;
+      top: 10px;
+      right: 600px;
+      z-index: 1000;
+      display: flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 6px 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+
+    .language-switch-fixed .flag-icon {
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      transition: transform 0.2s ease;
+    }
+
+    .language-switch-fixed .flag-icon:hover {
+      transform: scale(1.1);
+    }
+
+    /* Popup hiển thị ảnh */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+    }
+    .popup img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.9);}
+      to {opacity: 1; transform: scale(1);}
+    }
+  </style>
 </head>
-  <body>
-    <div id="root"></div>
+<body>
+  <div class="container">
+    <div class="language-switch-fixed">
+      <img src="https://flagcdn.com/w40/vn.png" alt="Tiếng Việt" title="Tiếng Việt" onclick="switchLang('vi')" class="flag-icon">
+      <img src="https://flagcdn.com/w40/us.png" alt="English" title="English" onclick="switchLang('en')" class="flag-icon">
+    </div>
+    <div class="avatar-box">
+      <img src="https://i.ibb.co/sSsbjNq/Jayden.jpg" alt="Avatar" class="avatar">
+    <div class="qr-top" onclick="showImagePopup('https://i.ibb.co/hJ8jKMK2/Jayden.jpg')">
+      <img src="https://i.ibb.co/hJ8jKMK2/Jayden.jpg" alt="QR" width="80" style="cursor: zoom-in;">
+    </div>
+    </div>
+    <h1 id="title" onclick="showImagePopup('https://i.ibb.co/fdr6N735/Jayden-min.jpg')" style="cursor: zoom-in;">
+      Võ Ngọc Nhân
+    </h1>
+    <div class="subtitle">Overseas Sales</div>
+    <a href="tel:+84 903 453 808" class="phone-button">📞 +84 903 453 808</a>
 
-    <script type="text/babel">
-      const { useState, useEffect, useRef } = React;
+    <div class="share-buttons">
+      <div onclick="navigator.share ? navigator.share({ title: document.title, url: location.href }) : alert('Trình duyệt không hỗ trợ')">🔗 Chia sẻ</div>
+      <div onclick="downloadVCard()">📇 Lưu Danh bạ</div>
+    </div>
 
-      // --- ICONS (SVG Components) ---
-      const Icons = {
-        Phone: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>,
-        Share2: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>,
-        Download: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>,
-        Home: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-        Briefcase: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
-        Link2: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"></path><path d="M15 7h2a5 5 0 0 1 0 10h-2"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg>,
-        ScanLine: ({size=18}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>,
-        X: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>,
-        Camera: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>,
-        AlertCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>,
-        Container: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 7.7c0-.8-.7-1.28-1.5-1.75L12 1l-8.5 4.95c-.8.47-1.5 1-1.5 1.75v8.6c0 .8.7 1.28 1.5 1.75L12 23l8.5-4.95c.8-.47 1.5-1 1.5-1.75z"/><path d="M2 7.7 12 13.44 22 7.7"/><path d="M12 22.96V13.44"/></svg>,
-        Package: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m16.5 9.4-9-5.19"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
-        Anchor: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>,
-        Box: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
-        Send: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
-        Edit: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>,
-        Trash2: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>,
-        Eye: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>,
-        Plus: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>,
-        Save: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>,
-        ArrowLeft: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>,
-        Settings: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>,
-        Image: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>,
-        Globe: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>,
-        Copy: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-      };
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/J0MAmvy7y8k?si=MqncRvvtpViXuCQT" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+    
+    <div class="video-button" id="consultButton">Đăng Ký Tư Vấn</div>
 
-      // --- DATA & CONSTANTS ---
-      const DEFAULT_ASSETS = {
-        avatar: "https://i.ibb.co/4RKTydDT/Andy.jpg",
-        avatarQr: "https://i.ibb.co/P76k1ZV/Andy.jpg",
-        cover: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-        roleIcon: "https://i.ibb.co/VY0kfHdv/Logo-Nhon-My-700x700-2-150x150.png",
-        flagVi: "https://flagcdn.com/w40/vn.png",
-        flagEn: "https://flagcdn.com/w40/us.png",
-      };
+    <div class="info" id="description">
+        * Có kinh nghiệm ở vị trí Sales Overseas trong ngành logistics, phụ trách thị trường Trung Quốc, Ấn Độ và các tuyến khác.<br>
+       * Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ.
 
-      const DEFAULT_QR_IMAGES = {
-        main: "https://i.ibb.co/P76k1ZV/Andy.jpg",
-        wechat: "https://i.ibb.co/QFSCgkCP/Andy-Wechat.jpg",
-        whatsapp: "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://wa.me/84972133680",
-        vcb: "https://i.ibb.co/wNnkr6ts/Andy-Vcb.jpg",
-        tcb: "https://upload.wikimedia.org/wikipedia/commons/0/02/Techcombank_logo.png"
-      };
+    </div>
 
-      const DEFAULT_SOCIAL_LINKS = [
-        { id: 'zalo', label: 'Zalo', iconUrl: "https://i.ibb.co/d4nRhVQV/Zalo.png", href: "https://zalo.me/0972133680" },
-        { id: 'whatsapp', label: 'WhatsApp', iconUrl: "https://i.ibb.co/XxqRB3Qg/Whatsapp.png", href: "https://wa.me/0972133680", qrImage: DEFAULT_QR_IMAGES.whatsapp },
-        { id: 'wechat', label: 'WeChat', iconUrl: "https://i.ibb.co/Zz41gSrk/Wechat.png", href: "#", qrImage: DEFAULT_QR_IMAGES.wechat },
-        { id: 'email', label: 'Email', iconUrl: "https://i.ibb.co/nqyMXyNM/Email.png", href: "mailto:sales1@longhoanglogistics.com" },
-        { id: 'map', label: 'Địa Chỉ', iconUrl: "https://i.ibb.co/7dTZHSwV/Map.png", href: "https://maps.app.goo.gl/ZSVFYotTCuGWNQmW8" },
-        { id: 'website', label: 'Website', iconUrl: "https://i.ibb.co/Gf69QR4R/Website.png", href: "https://www.longhoanglogistics.com" },
-        { id: 'profile', label: 'Profile', iconUrl: "https://i.ibb.co/VY01h09d/Profile.png", href: "https://drive.google.com/file/d/1wyPCBaCLTiUx3aWMwIX3X1WryfnTL-Lp/view?usp=drive_link" },
-        { id: 'facebook', label: 'Facebook', iconUrl: "https://i.ibb.co/67VF7N5R/Facebook.png", href: "https://www.facebook.com/share/1BtMe8vCaB/?mibextid=wwXIfr" },
-        { id: 'tiktok', label: 'TikTok', iconUrl: "https://i.ibb.co/cStFGVqG/Tiktok.png", href: "https://www.tiktok.com/@hoangkimberry" },
-        { id: 'instagram', label: 'Instagram', iconUrl: "https://i.ibb.co/39gCrw9n/Instagram.png", href: "https://www.instagram.com/hoangkimberry" },
-        { id: 'momo', label: 'Momo', iconUrl: "https://i.ibb.co/KpRgSv04/Momo.png", href: "https://nhantien.momo.vn/hoangkimberry" },
-        { id: 'vcb', label: 'VCB', iconUrl: "https://i.ibb.co/WNDG8rdx/Vietcombank.png", href: "#", qrImage: DEFAULT_QR_IMAGES.vcb },
-        { id: 'tcb', label: 'TCB', iconUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3a3f3t3x3z3_y3_u3_v3_w3_x3_y3_z3_w3&s", href: "#", qrImage: DEFAULT_QR_IMAGES.tcb },
-      ];
+    <div class="role-section">
+      <div class="role-item">
+        <img src="https://i.ibb.co/VY0kfHdv/Logo-Nhon-My-700x700-2-150x150.png">
+        <div class="role-text" id="role1">Overseas Sales – Công ty Long Hoàng Logistics</div>
+        <span>🔗</span>
+      </div>
+    </div>
 
-      const SAMPLE_PROJECTS = [
-        { id: 'p1', title: 'Vận chuyển siêu trường siêu trọng', thumbnail: 'https://images.unsplash.com/photo-1605218427360-69603f64ec80?auto=format&fit=crop&w=800&q=80', description: 'Dự án vận chuyển máy móc thiết bị hạng nặng cho nhà máy nhiệt điện. Đảm bảo an toàn tuyệt đối và đúng tiến độ.', images: ['https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80'] },
-        { id: 'p2', title: 'Air Freight - Hàng xuất khẩu', thumbnail: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80', description: 'Xử lý lô hàng xuất khẩu bằng đường hàng không đi thị trường EU/US với thời gian gấp.', images: ['https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80'] },
-        { id: 'p3', title: 'Kho bãi và phân phối', thumbnail: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80', description: 'Giải pháp kho bãi thông minh và hệ thống phân phối hàng hóa toàn quốc.', images: ['https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80'] }
-      ];
+    <div class="icon-links">
+      <a href="https://zalo.me/0903 453 808" target="_blank"><img src="https://i.ibb.co/d4nRhVQV/Zalo.png"/><span>Zalo</span></a>
+      <a href="https://i.ibb.co/F4T66yKh/Jayden-Whatapps.jpg" target="_blank"><img src="https://i.ibb.co/XxqRB3Qg/Whatsapp.png"/><span>WhatsApp</span></a>
+      <a href="https://i.ibb.co/CsQwSST7/Jayden-Wechat.jpg"><img src="https://i.ibb.co/Zz41gSrk/Wechat.png"/><span>WeChat</span></a>
+      <a href="mailto:Jacky@longhoanglogistics.com"><img src="https://i.ibb.co/nqyMXyNM/Email.png"/><span>Email</span></a>
+      <a href="https://maps.app.goo.gl/ZSVFYotTCuGWNQmW8" target="_blank"><img src="https://i.ibb.co/7dTZHSwV/Map.png"/><span>Địa Chỉ</span></a>
+      <a href="https://www.longhoanglogistics.com" target="_blank"><img src="https://i.ibb.co/Gf69QR4R/Website.png"/><span>Website</span></a>
+      <a href="https://drive.google.com/file/d/1wyPCBaCLTiUx3aWMwIX3X1WryfnTL-Lp/view?usp=drive_link" target="_blank"><img src="https://i.ibb.co/VY01h09d/Profile.png"/><span>Profile</span></a>
+      <a href="https://www.facebook.com/share/1SwQWcGDNp/" target="_blank"><img src="https://i.ibb.co/67VF7N5R/Facebook.png"/><span>Facebook</span></a>
+      <a href="https://www.tiktok.com/@jydn111_?_t=ZS-8ycWPn5Mth2&_r=1" target="_blank"><img src="https://i.ibb.co/cStFGVqG/Tiktok.png"/><span>TikTok</span></a>
+      <a href="https://www.instagram.com/jden0_111?igsh=MjYxbnVxbDRsOTh1" target="_blank"><img src="https://i.ibb.co/39gCrw9n/Instagram.png"/><span>Instagram</span></a>
+      <a href="https://nhantien.momo.vn/" target="_blank"><img src="https://i.ibb.co/KpRgSv04/Momo.png"/><span>Momo</span></a>
+      <a href=""><img src="https://i.ibb.co/WNDG8rdx/Vietcombank.png"/><span>VCB</span></a>
+      <a href="https://i.ibb.co/zVjxK9Jw/Jayden-tcb.jpg"><img src="https://i.ibb.co/FktVzW2z/Tcb.png"/><span>TCB</span></a>
+    </div>
+  </div>
 
-      // --- CONFIG START ---
-      const DEFAULT_PROFILE = {
-  "id": "1763621700388",
-  "name": "Võ Ngọc Nhân",
-  "phoneContact": "+84903453808",
-  "zaloContact": "0903453808",
-  "assets": {
-    "avatar": "https://i.ibb.co/sSsbjNq/Jayden.jpg",
-    "avatarQr": "https://i.ibb.co/hJ8jKMK2/Jayden.jpg",
-    "cover": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    "roleIcon": "https://i.ibb.co/VY0kfHdv/Logo-Nhon-My-700x700-2-150x150.png",
-    "flagVi": "https://flagcdn.com/w40/vn.png",
-    "flagEn": "https://flagcdn.com/w40/us.png"
-  },
-  "qrImages": {
-    "main": "https://i.ibb.co/hJ8jKMK2/Jayden.jpg",
-    "wechat": "https://i.ibb.co/CsQwSST7/Jayden-Wechat.jpg",
-    "whatsapp": "https://i.ibb.co/F4T66yKh/Jayden-Whatapps.jpg",
-    "vcb": "",
-    "tcb": "https://i.ibb.co/zVjxK9Jw/Jayden-tcb.jpg"
-  },
-  "socialLinks": [
-    {
-      "id": "zalo",
-      "label": "Zalo",
-      "iconUrl": "https://i.ibb.co/d4nRhVQV/Zalo.png",
-      "href": "https://zalo.me/0903453808"
-    },
-    {
-      "id": "whatsapp",
-      "label": "WhatsApp",
-      "iconUrl": "https://i.ibb.co/XxqRB3Qg/Whatsapp.png",
-      "href": "https://wa.me/",
-      "qrImage": "https://i.ibb.co/F4T66yKh/Jayden-Whatapps.jpg"
-    },
-    {
-      "id": "wechat",
-      "label": "WeChat",
-      "iconUrl": "https://i.ibb.co/Zz41gSrk/Wechat.png",
-      "href": "#",
-      "qrImage": "https://i.ibb.co/CsQwSST7/Jayden-Wechat.jpg"
-    },
-    {
-      "id": "email",
-      "label": "Email",
-      "iconUrl": "https://i.ibb.co/nqyMXyNM/Email.png",
-      "href": "mailto:jacky@longhoanglogistics.com"
-    },
-    {
-      "id": "map",
-      "label": "Địa Chỉ",
-      "iconUrl": "https://i.ibb.co/7dTZHSwV/Map.png",
-      "href": "https://maps.app.goo.gl/ZSVFYotTCuGWNQmW8"
-    },
-    {
-      "id": "website",
-      "label": "Website",
-      "iconUrl": "https://i.ibb.co/Gf69QR4R/Website.png",
-      "href": "https://www.longhoanglogistics.com"
-    },
-    {
-      "id": "profile",
-      "label": "Profile",
-      "iconUrl": "https://i.ibb.co/VY01h09d/Profile.png",
-      "href": "https://drive.google.com/file/d/1wyPCBaCLTiUx3aWMwIX3X1WryfnTL-Lp/view?usp=drive_link"
-    },
-    {
-      "id": "facebook",
-      "label": "Facebook",
-      "iconUrl": "https://i.ibb.co/67VF7N5R/Facebook.png",
-      "href": "https://www.facebook.com/"
-    },
-    {
-      "id": "tiktok",
-      "label": "TikTok",
-      "iconUrl": "https://i.ibb.co/cStFGVqG/Tiktok.png",
-      "href": "https://www.tiktok.com/"
-    },
-    {
-      "id": "instagram",
-      "label": "Instagram",
-      "iconUrl": "https://i.ibb.co/39gCrw9n/Instagram.png",
-      "href": "https://www.instagram.com/"
-    },
-    {
-      "id": "momo",
-      "label": "Momo",
-      "iconUrl": "https://i.ibb.co/KpRgSv04/Momo.png",
-      "href": "https://nhantien.momo.vn/"
-    },
-    {
-      "id": "tcb",
-      "label": "TCB",
-      "iconUrl": "https://i.ibb.co/FktVzW2z/Tcb.png",
-      "href": "#",
-      "qrImage": "https://i.ibb.co/zVjxK9Jw/Jayden-tcb.jpg"
-    }
-  ],
-  "projects": [
-    {
-      "id": "p1",
-      "title": "Vận chuyển siêu trường siêu trọng",
-      "thumbnail": "https://images.unsplash.com/photo-1605218427360-69603f64ec80?auto=format&fit=crop&w=800&q=80",
-      "description": "Dự án vận chuyển máy móc thiết bị hạng nặng cho nhà máy nhiệt điện. Đảm bảo an toàn tuyệt đối và đúng tiến độ.",
-      "images": [
-        "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80"
-      ]
-    },
-    {
-      "id": "p2",
-      "title": "Air Freight - Hàng xuất khẩu",
-      "thumbnail": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
-      "description": "Xử lý lô hàng xuất khẩu bằng đường hàng không đi thị trường EU/US với thời gian gấp.",
-      "images": [
-        "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80"
-      ]
-    },
-    {
-      "id": "p3",
-      "title": "Kho bãi và phân phối",
-      "thumbnail": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80",
-      "description": "Giải pháp kho bãi thông minh và hệ thống phân phối hàng hóa toàn quốc.",
-      "images": [
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80"
-      ]
-    }
-  ],
-  "content": {
-    "vi": {
-      "title": "Võ Ngọc Nhân",
-      "subtitle": "Overseas Sales",
-      "description": [
-        "Có kinh nghiệm ở vị trí Sales Overseas trong ngành logistics, phụ trách thị trường Trung Quốc, Ấn Độ và các tuyến khác.",
-        "Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ."
-      ],
-      "consultButton": "Đăng Ký Tư Vấn",
-      "roles": [
-        "Overseas Sales – Công ty Long Hoàng Logistics"
-      ],
-      "saveContact": "Lưu Danh bạ",
-      "share": "Chia sẻ",
-      "scanQr": "Quét mã",
-      "close": "Đóng",
-      "projectsTitle": "Dự Án Tiêu Biểu",
-      "backToProjects": "Quay lại danh sách",
-      "consultationForm": {
-        "title": "Yêu Cầu Báo Giá",
-        "goodsType": "Loại Hàng hóa",
-        "pol": "Cảng đi (POL)",
-        "pod": "Cảng đến (POD)",
-        "volume": "Khối lượng (Volume)",
-        "submit": "Báo Giá Qua Zalo",
-        "alertCopied": "Nội dung đã được copy! Vui lòng dán vào cuộc trò chuyện Zalo."
+  <!-- Popup ảnh -->
+  <div id="imagePopup" class="popup" onclick="closePopup()">
+    <img id="popupImage" src="" alt="Preview">
+  </div>
+
+  <script>
+    const translations = {
+      vi: {
+        title: "Võ Ngọc Nhân",
+        description: `
+        * Có kinh nghiệm ở vị trí Sales Overseas trong ngành logistics, phụ trách thị trường Trung Quốc, Ấn Độ và các tuyến khác.<br>
+       * Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ.
+`,
+        consult: "Đăng Ký Tư Vấn",
+        roles: ["Overseas Sales – Công ty Long Hoàng Logistics"]
+      },
+      en: {
+        title: "Mr. Jayden",
+        description: `
+        * Experience as an Overseas Sales Representative in the logistics industry, responsible for the Chinese, Indian, and other trade lanes.<br>
+        * Responsibilities included sourcing international clients, quoting FCL/LCL and air freight services, tracking shipments, and coordinating with the documentation and operations teams to ensure on-time delivery.`,
+        consult: "Register for Consultation",
+        roles: ["Overseas Sales – Long Hoang Logistics Company"]
       }
-    },
-    "en": {
-      "title": "Mr. Jayden",
-      "subtitle": "Overseas Sales",
-      "description": [
-        "Experience as an Overseas Sales Representative in the logistics industry, responsible for the Chinese, Indian, and other trade lanes.",
-        "Responsibilities included sourcing international clients, quoting FCL/LCL and air freight services, tracking shipments, and coordinating with the documentation and operations teams to ensure on-time delivery."
-      ],
-      "consultButton": "Register for Consultation",
-      "roles": [
-        "Overseas Sales – Công ty Long Hoàng Logistics"
-      ],
-      "saveContact": "Save Contact",
-      "share": "Share",
-      "scanQr": "Scan QR",
-      "close": "Close",
-      "projectsTitle": "Featured Projects",
-      "backToProjects": "Back to Projects",
-      "consultationForm": {
-        "title": "Request Quotation",
-        "goodsType": "Type of Goods",
-        "pol": "Port of Loading",
-        "pod": "Port of Discharge",
-        "volume": "Volume",
-        "submit": "Get Quote via Zalo",
-        "alertCopied": "Content copied! Please paste into Zalo chat."
+    };
+
+    function switchLang(lang) {
+      document.getElementById("title").innerHTML = translations[lang].title;
+      document.getElementById("description").innerHTML = translations[lang].description;
+      document.getElementById("consultButton").innerHTML = translations[lang].consult;
+      for (let i = 0; i < translations[lang].roles.length; i++) {
+        document.getElementById(`role${i + 1}`).innerHTML = translations[lang].roles[i];
       }
     }
-  }
-};
-      // --- CONFIG END ---
 
-      const loadProfile = () => {
-        try {
-          const stored = localStorage.getItem('ncv_cards_db');
-          if (stored) {
-            const profiles = JSON.parse(stored);
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            if (id) return profiles.find(p => p.id === id) || DEFAULT_PROFILE;
-            return profiles[0] || DEFAULT_PROFILE;
-          }
-        } catch (e) {}
-        return DEFAULT_PROFILE;
-      };
+    function downloadVCard() {
+      const blob = new Blob([`
+BEGIN:VCARD
+VERSION:3.0
+FN: Võ Ngọc Nhân
+TEL:0903 453 808
+EMAIL:Jacky@longhoanglogistics.com
+END:VCARD
+      `], { type: 'text/vcard' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Võ Ngọc Nhân.vcf';
+      link.click();
+    }
 
-      // --- COMPONENTS ---
-
-      const ImageModal = ({ isOpen, imageUrl, onClose, onScanClick, title, description }) => {
-        if (!isOpen || !imageUrl) return null;
-        return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm animate-fade-in p-4" onClick={onClose}>
-            <div className="relative bg-white rounded-2xl overflow-hidden shadow-2xl max-w-sm w-full animate-slide-up" onClick={e => e.stopPropagation()}>
-              <div className="flex justify-between items-center p-4 border-b">
-                <h3 className="font-bold text-gray-800">{title || 'QR Code'}</h3>
-                <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded-full transition"><Icons.X /></button>
-              </div>
-              <div className="p-6 flex flex-col items-center justify-center bg-gray-50">
-                <img src={imageUrl} alt="QR Display" className="w-64 h-64 object-contain rounded-lg shadow-lg border-4 border-white" />
-                <p className="mt-4 text-sm text-gray-500 text-center">{description || 'Quét mã này để kết nối'}</p>
-              </div>
-              <div className="p-4 bg-white border-t flex gap-3">
-                <button onClick={() => { window.open(imageUrl, '_blank'); }} className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 transition"><Icons.Download /> <span>Lưu</span></button>
-                {onScanClick && <button onClick={() => { onClose(); onScanClick(); }} className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition shadow-blue-200 shadow-lg"><Icons.ScanLine /> <span>Quét Mã</span></button>}
-              </div>
-            </div>
-          </div>
-        );
-      };
-
-      const QRScannerModal = ({ isOpen, onClose, label }) => {
-        const videoRef = useRef(null);
-        const [error, setError] = useState(null);
-
-        useEffect(() => {
-          let stream = null;
-          if (isOpen) {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-              .then(s => { stream = s; if (videoRef.current) { videoRef.current.srcObject = stream; videoRef.current.play(); }})
-              .catch(err => setError("Không thể truy cập camera. Vui lòng kiểm tra quyền hoặc sử dụng HTTPS."));
-          }
-          return () => { if (stream) stream.getTracks().forEach(t => t.stop()); };
-        }, [isOpen]);
-
-        if (!isOpen) return null;
-        return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 animate-fade-in">
-            <div className="relative w-full max-w-md h-full flex flex-col">
-              <div className="flex justify-between items-center p-4 text-white bg-black bg-opacity-50 absolute top-0 w-full z-10">
-                <h2 className="text-lg font-bold flex items-center gap-2"><Icons.Camera /> {label}</h2>
-                <button onClick={onClose} className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition"><Icons.X /></button>
-              </div>
-              <div className="flex-1 bg-black relative flex items-center justify-center overflow-hidden">
-                {!error ? (
-                  <>
-                    <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" playsInline muted />
-                    <div className="relative z-10 w-64 h-64 border-2 border-white/50 rounded-lg overflow-hidden"><div className="w-full h-1 bg-green-500 absolute top-0 animate-[scan_2s_infinite]"></div></div>
-                  </>
-                ) : <div className="text-white text-center p-4"><Icons.AlertCircle /><p className="mt-2">{error}</p></div>}
-              </div>
-            </div>
-            <style>{`@keyframes scan { 0% { top: 0%; opacity: 1; } 50% { opacity: 0.5; } 100% { top: 100%; opacity: 0; } }`}</style>
-          </div>
-        );
-      };
-
-      const ConsultationModal = ({ isOpen, onClose, translations, zaloLink }) => {
-        const [formData, setFormData] = useState({ goodsType: '', pol: '', pod: '', volume: '' });
-        const [isCopied, setIsCopied] = useState(false);
-        if (!isOpen) return null;
-        
-        const handleSubmit = async (e) => {
-          e.preventDefault();
-          const message = `📢 *YÊU CẦU BÁO GIÁ*\n📦 *${translations.goodsType}:* ${formData.goodsType}\n🚩 *${translations.pol}:* ${formData.pol}\n🏁 *${translations.pod}:* ${formData.pod}\n📊 *${translations.volume}:* ${formData.volume}`;
-          try { await navigator.clipboard.writeText(message); setIsCopied(true); setTimeout(() => { window.open(zaloLink, '_blank'); setIsCopied(false); }, 1000); } 
-          catch (err) { window.open(zaloLink, '_blank'); }
-        };
-
-        return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-sm animate-fade-in p-4">
-            <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-slide-up flex flex-col max-h-[90vh]">
-              <div className="bg-gradient-to-r from-[#8b004f] to-[#b20066] p-4 flex justify-between items-center text-white">
-                <h2 className="text-lg font-bold flex items-center gap-2"><Icons.Container /> {translations.title}</h2>
-                <button onClick={onClose}><Icons.X /></button>
-              </div>
-              <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto no-scrollbar">
-                <div className="space-y-1"><label className="flex gap-2 text-sm font-medium"><Icons.Package /> {translations.goodsType}</label><input required className="w-full p-3 bg-gray-50 border rounded-xl" value={formData.goodsType} onChange={e => setFormData({...formData, goodsType: e.target.value})} /></div>
-                <div className="space-y-1"><label className="flex gap-2 text-sm font-medium"><Icons.Anchor /> {translations.pol}</label><input required className="w-full p-3 bg-gray-50 border rounded-xl" value={formData.pol} onChange={e => setFormData({...formData, pol: e.target.value})} /></div>
-                <div className="space-y-1"><label className="flex gap-2 text-sm font-medium"><Icons.Anchor /> {translations.pod}</label><input required className="w-full p-3 bg-gray-50 border rounded-xl" value={formData.pod} onChange={e => setFormData({...formData, pod: e.target.value})} /></div>
-                <div className="space-y-1"><label className="flex gap-2 text-sm font-medium"><Icons.Box /> {translations.volume}</label><input required className="w-full p-3 bg-gray-50 border rounded-xl" value={formData.volume} onChange={e => setFormData({...formData, volume: e.target.value})} /></div>
-                {isCopied && <div className="bg-green-100 text-green-700 p-3 rounded-lg text-sm text-center">{translations.alertCopied}</div>}
-                <button type="submit" className="w-full bg-[#0068FF] text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2"><Icons.Send /> {translations.submit}</button>
-              </form>
-            </div>
-          </div>
-        );
-      };
-
-      // --- ADMIN PAGE (CMS) ---
-      const Admin = () => {
-        const [profiles, setProfiles] = useState([]);
-        const [editForm, setEditForm] = useState(DEFAULT_PROFILE);
-        const [editingId, setEditingId] = useState(null);
-        const [tab, setTab] = useState('general'); // general, assets, content_vi, content_en, social, projects
-
-        useEffect(() => {
-          const stored = localStorage.getItem('ncv_cards_db');
-          setProfiles(stored ? JSON.parse(stored) : [DEFAULT_PROFILE]);
-        }, []);
-
-        const save = (newProfiles) => {
-          localStorage.setItem('ncv_cards_db', JSON.stringify(newProfiles));
-          setProfiles(newProfiles);
-        };
-
-        const handleSaveCurrent = () => {
-           const updated = profiles.some(p => p.id === editForm.id) ? profiles.map(p => p.id === editForm.id ? editForm : p) : [...profiles, editForm];
-           save(updated);
-           alert('Đã lưu vào trình duyệt! (Saved to LocalStorage)');
-        };
-
-        const handleExportJson = () => {
-          const dataStr = JSON.stringify(editForm, null, 2);
-          navigator.clipboard.writeText(dataStr);
-          alert('Đã copy dữ liệu JSON vào bộ nhớ tạm!');
-        };
-
-        const handleDownloadWebsite = async () => {
-          try {
-             // Chuẩn bị nội dung config mới
-             const newConfig = `// --- CONFIG START ---
-      const DEFAULT_PROFILE = ${JSON.stringify(editForm, null, 2)};
-      // --- CONFIG END ---`;
-             
-             // Đọc index.html
-             let indexContent = "";
-             try {
-               const res = await fetch('index.html');
-               if (!res.ok) throw new Error('Failed');
-               indexContent = await res.text();
-             } catch(e) {
-               alert("Không thể đọc file index.html gốc (Lỗi CORS/File). Vui lòng chạy trên Localhost/Server để dùng tính năng này.");
-               return;
-             }
-             const updatedIndex = indexContent.replace(/\/\/ --- CONFIG START ---[\s\S]*?\/\/ --- CONFIG END ---/, newConfig);
-
-             // Đọc project.html
-             let projectContent = "";
-             try {
-               const res = await fetch('project.html');
-               if (!res.ok) throw new Error('Failed');
-               projectContent = await res.text();
-             } catch(e) {
-               alert("Không tìm thấy file project.html.");
-               return;
-             }
-             const updatedProject = projectContent.replace(/\/\/ --- CONFIG START ---[\s\S]*?\/\/ --- CONFIG END ---/, newConfig);
-
-             // Tải xuống
-             const download = (text, name) => {
-                const blob = new Blob([text], {type: 'text/html'});
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = name;
-                a.click();
-             };
-
-             download(updatedIndex, 'index.html');
-             setTimeout(() => download(updatedProject, 'project.html'), 500);
-             
-             alert("Đã tạo file index.html và project.html mới với dữ liệu hiện tại. Hãy kiểm tra thư mục tải xuống!");
-
-          } catch (err) {
-             console.error(err);
-             alert("Lỗi: " + err.message);
-          }
-        };
-
-        // Helper to update deep state
-        const update = (path, value) => {
-           const p = path.split('.');
-           const newState = {...editForm};
-           let ref = newState;
-           for(let i=0; i<p.length-1; i++) ref = ref[p[i]];
-           ref[p[p.length-1]] = value;
-           setEditForm(newState);
-        };
-
-        // Helper for Array management (Social/Projects)
-        const updateArrayItem = (arrName, idx, field, val) => {
-           const arr = [...editForm[arrName]];
-           arr[idx] = {...arr[idx], [field]: val};
-           setEditForm({...editForm, [arrName]: arr});
-        };
-        const removeArrayItem = (arrName, idx) => {
-           setEditForm({...editForm, [arrName]: editForm[arrName].filter((_, i) => i !== idx)});
-        };
-        const addArrayItem = (arrName, item) => {
-           setEditForm({...editForm, [arrName]: [...editForm[arrName], item]});
-        };
-
-        if (editingId) {
-           return (
-             <div className="min-h-screen bg-gray-100 p-4 md:p-8">
-               <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden flex flex-col h-[90vh]">
-                  {/* Header */}
-                  <div className="bg-gray-800 text-white p-4 flex justify-between items-center shrink-0">
-                    <div className="flex items-center gap-4">
-                      <button onClick={() => setEditingId(null)} className="hover:bg-gray-700 p-2 rounded"><Icons.ArrowLeft /></button>
-                      <h2 className="font-bold text-lg">Chỉnh sửa: {editForm.name}</h2>
-                    </div>
-                    <div className="flex gap-2">
-                       <button onClick={handleExportJson} className="bg-gray-600 hover:bg-gray-700 px-3 py-2 rounded text-sm font-medium flex items-center gap-2"><Icons.Copy /> Copy JSON</button>
-                       <button onClick={handleDownloadWebsite} className="bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm font-bold flex items-center gap-2 shadow-lg border border-indigo-400"><Icons.Download /> Tải Website (.html)</button>
-                       <button onClick={handleSaveCurrent} className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-sm font-bold flex items-center gap-2 shadow-lg"><Icons.Save /> Lưu Thay Đổi</button>
-                    </div>
-                  </div>
-
-                  {/* Body */}
-                  <div className="flex flex-1 overflow-hidden">
-                     {/* Sidebar Tabs */}
-                     <div className="w-48 bg-gray-50 border-r overflow-y-auto shrink-0">
-                        {[
-                          {id: 'general', label: 'Chung', icon: Icons.Settings},
-                          {id: 'assets', label: 'Hình ảnh', icon: Icons.Image},
-                          {id: 'content_vi', label: 'Nội dung (VN)', icon: Icons.Briefcase},
-                          {id: 'content_en', label: 'Nội dung (EN)', icon: Icons.Globe},
-                          {id: 'social', label: 'Mạng Xã Hội', icon: Icons.Share2},
-                          {id: 'projects', label: 'Dự án', icon: Icons.Box}
-                        ].map(t => (
-                           <button key={t.id} onClick={() => setTab(t.id)} className={`w-full text-left p-4 flex items-center gap-2 hover:bg-gray-100 transition ${tab===t.id ? 'bg-white border-l-4 border-blue-600 font-bold text-blue-600' : 'text-gray-600'}`}>
-                              <t.icon /> {t.label}
-                           </button>
-                        ))}
-                     </div>
-
-                     {/* Content Area */}
-                     <div className="flex-1 overflow-y-auto p-8 bg-white">
-                        
-                        {/* GENERAL TAB */}
-                        {tab === 'general' && (
-                          <div className="space-y-6 max-w-2xl">
-                             <h3 className="text-xl font-bold border-b pb-2">Thông tin cơ bản</h3>
-                             <div><label className="block text-sm font-medium mb-1">Tên quản lý (Admin)</label><input className="w-full border p-2 rounded" value={editForm.name} onChange={e => update('name', e.target.value)} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Số điện thoại (Gọi)</label><input className="w-full border p-2 rounded" value={editForm.phoneContact} onChange={e => update('phoneContact', e.target.value)} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Số Zalo (Liên hệ)</label><input className="w-full border p-2 rounded" value={editForm.zaloContact} onChange={e => update('zaloContact', e.target.value)} /></div>
-                          </div>
-                        )}
-
-                        {/* ASSETS TAB */}
-                        {tab === 'assets' && (
-                          <div className="space-y-6 max-w-2xl">
-                             <h3 className="text-xl font-bold border-b pb-2">Tài nguyên hình ảnh (Links)</h3>
-                             {Object.keys(editForm.assets).map(key => (
-                               <div key={key}>
-                                 <label className="block text-sm font-medium mb-1 capitalize">{key}</label>
-                                 <div className="flex gap-2">
-                                   <input className="w-full border p-2 rounded" value={editForm.assets[key]} onChange={e => update(`assets.${key}`, e.target.value)} />
-                                   <img src={editForm.assets[key]} className="w-10 h-10 object-cover border rounded bg-gray-100" />
-                                 </div>
-                               </div>
-                             ))}
-                             <h3 className="text-xl font-bold border-b pb-2 mt-8">Mã QR (Links)</h3>
-                             {Object.keys(editForm.qrImages).map(key => (
-                               <div key={key}>
-                                 <label className="block text-sm font-medium mb-1 capitalize">{key}</label>
-                                 <div className="flex gap-2">
-                                   <input className="w-full border p-2 rounded" value={editForm.qrImages[key]} onChange={e => update(`qrImages.${key}`, e.target.value)} />
-                                   <img src={editForm.qrImages[key]} className="w-10 h-10 object-contain border rounded bg-gray-100" />
-                                 </div>
-                               </div>
-                             ))}
-                          </div>
-                        )}
-
-                        {/* CONTENT VI TAB */}
-                        {tab === 'content_vi' && (
-                          <div className="space-y-6 max-w-2xl">
-                             <h3 className="text-xl font-bold border-b pb-2 text-green-600">Nội dung Tiếng Việt</h3>
-                             <div><label className="block text-sm font-medium mb-1">Tiêu đề chính</label><input className="w-full border p-2 rounded" value={editForm.content.vi.title} onChange={e => update('content.vi.title', e.target.value)} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Chức danh</label><input className="w-full border p-2 rounded" value={editForm.content.vi.subtitle} onChange={e => update('content.vi.subtitle', e.target.value)} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Mô tả (Mỗi dòng 1 câu)</label><textarea className="w-full border p-2 rounded h-32 font-mono text-sm" value={editForm.content.vi.description.join('\n')} onChange={e => update('content.vi.description', e.target.value.split('\n'))} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Chức vụ (Roles)</label><textarea className="w-full border p-2 rounded h-20" value={editForm.content.vi.roles.join('\n')} onChange={e => update('content.vi.roles', e.target.value.split('\n'))} /></div>
-                          </div>
-                        )}
-
-                        {/* CONTENT EN TAB */}
-                        {tab === 'content_en' && (
-                          <div className="space-y-6 max-w-2xl">
-                             <h3 className="text-xl font-bold border-b pb-2 text-blue-600">English Content</h3>
-                             <div><label className="block text-sm font-medium mb-1">Display Name</label><input className="w-full border p-2 rounded" value={editForm.content.en.title} onChange={e => update('content.en.title', e.target.value)} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Job Title</label><input className="w-full border p-2 rounded" value={editForm.content.en.subtitle} onChange={e => update('content.en.subtitle', e.target.value)} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Description (Line by line)</label><textarea className="w-full border p-2 rounded h-32 font-mono text-sm" value={editForm.content.en.description.join('\n')} onChange={e => update('content.en.description', e.target.value.split('\n'))} /></div>
-                             <div><label className="block text-sm font-medium mb-1">Roles</label><textarea className="w-full border p-2 rounded h-20" value={editForm.content.en.roles.join('\n')} onChange={e => update('content.en.roles', e.target.value.split('\n'))} /></div>
-                          </div>
-                        )}
-
-                        {/* SOCIAL TAB */}
-                        {tab === 'social' && (
-                          <div className="space-y-4">
-                             <div className="flex justify-between items-center border-b pb-2">
-                                <h3 className="text-xl font-bold">Mạng xã hội</h3>
-                                <button onClick={() => addArrayItem('socialLinks', {id: Date.now().toString(), label: 'New', iconUrl: '', href: ''})} className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-sm font-bold hover:bg-blue-200">+ Thêm</button>
-                             </div>
-                             {editForm.socialLinks.map((link, idx) => (
-                               <div key={idx} className="flex gap-2 items-start bg-gray-50 p-3 rounded border">
-                                 <img src={link.iconUrl || 'https://via.placeholder.com/40'} className="w-10 h-10 object-contain bg-white rounded" />
-                                 <div className="flex-1 grid grid-cols-2 gap-2">
-                                    <input placeholder="Label" className="border p-1 rounded text-sm" value={link.label} onChange={e => updateArrayItem('socialLinks', idx, 'label', e.target.value)} />
-                                    <input placeholder="Icon URL" className="border p-1 rounded text-sm" value={link.iconUrl} onChange={e => updateArrayItem('socialLinks', idx, 'iconUrl', e.target.value)} />
-                                    <input placeholder="Link / Href" className="border p-1 rounded text-sm col-span-2" value={link.href} onChange={e => updateArrayItem('socialLinks', idx, 'href', e.target.value)} />
-                                    <input placeholder="QR Image (Optional)" className="border p-1 rounded text-sm col-span-2" value={link.qrImage || ''} onChange={e => updateArrayItem('socialLinks', idx, 'qrImage', e.target.value)} />
-                                 </div>
-                                 <button onClick={() => removeArrayItem('socialLinks', idx)} className="text-red-500 p-1 hover:bg-red-50 rounded"><Icons.Trash2 /></button>
-                               </div>
-                             ))}
-                          </div>
-                        )}
-
-                        {/* PROJECTS TAB */}
-                        {tab === 'projects' && (
-                          <div className="space-y-4">
-                             <div className="flex justify-between items-center border-b pb-2">
-                                <h3 className="text-xl font-bold">Dự Án</h3>
-                                <button onClick={() => addArrayItem('projects', {id: Date.now().toString(), title: 'New Project', description: '', thumbnail: '', images: []})} className="bg-blue-100 text-blue-600 px-3 py-1 rounded text-sm font-bold hover:bg-blue-200">+ Thêm Dự Án</button>
-                             </div>
-                             {editForm.projects.map((proj, idx) => (
-                               <div key={idx} className="bg-gray-50 p-4 rounded border space-y-3">
-                                 <div className="flex justify-between">
-                                   <h4 className="font-bold text-gray-700">Project #{idx+1}</h4>
-                                   <button onClick={() => removeArrayItem('projects', idx)} className="text-red-600 text-sm hover:underline">Xóa</button>
-                                 </div>
-                                 <div><label className="text-xs font-bold text-gray-500 uppercase">Tên dự án</label><input className="w-full border p-2 rounded" value={proj.title} onChange={e => updateArrayItem('projects', idx, 'title', e.target.value)} /></div>
-                                 <div><label className="text-xs font-bold text-gray-500 uppercase">Ảnh thu nhỏ (Thumbnail)</label><input className="w-full border p-2 rounded" value={proj.thumbnail} onChange={e => updateArrayItem('projects', idx, 'thumbnail', e.target.value)} /></div>
-                                 <div><label className="text-xs font-bold text-gray-500 uppercase">Mô tả</label><textarea className="w-full border p-2 rounded h-24" value={proj.description} onChange={e => updateArrayItem('projects', idx, 'description', e.target.value)} /></div>
-                                 <div>
-                                   <label className="text-xs font-bold text-gray-500 uppercase">Ảnh chi tiết (Mỗi dòng 1 link)</label>
-                                   <textarea className="w-full border p-2 rounded h-20 font-mono text-xs" value={proj.images?.join('\n')} onChange={e => updateArrayItem('projects', idx, 'images', e.target.value.split('\n'))} />
-                                 </div>
-                               </div>
-                             ))}
-                          </div>
-                        )}
-                     </div>
-                  </div>
-               </div>
-             </div>
-           )
+    // --- Popup ảnh tự động ---
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll(".icon-links a").forEach(link => {
+        const href = link.getAttribute("href");
+        if (href && (href.endsWith(".jpg") || href.endsWith(".png") || href.endsWith(".jpeg"))) {
+          link.addEventListener("click", function(e) {
+            e.preventDefault();
+            showImagePopup(href);
+          });
         }
+      });
+    });
 
-        return (
-          <div className="min-h-screen bg-gray-100 p-8 font-sans">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-800">Quản trị NCV Card</h1>
-                <button onClick={() => { const newP = {...DEFAULT_PROFILE, id: Date.now().toString(), name: 'New User'}; setEditForm(newP); setEditingId(newP.id); }} className="bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 hover:bg-green-700 transition transform hover:-translate-y-1"><Icons.Plus /> Tạo Card Mới</button>
-              </div>
-              
-              <div className="grid gap-4">
-                {profiles.map(p => (
-                  <div key={p.id} className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-between border-l-4 border-blue-500">
-                    <div className="flex gap-4 items-center">
-                      <img src={p.assets.avatar} className="w-16 h-16 rounded-full border-2 border-gray-200 object-cover" />
-                      <div>
-                        <div className="font-bold text-xl text-gray-800">{p.name}</div>
-                        <div className="text-sm text-gray-500">{p.content.vi.subtitle}</div>
-                        <div className="text-xs text-gray-400 mt-1">ID: {p.id}</div>
-                      </div>
-                    </div>
-                    <div className="flex gap-3">
-                      <button onClick={() => { window.open(`index.html?id=${p.id}`, '_blank'); }} className="p-2 text-gray-500 hover:text-blue-600 bg-gray-100 rounded-lg hover:bg-blue-50 transition"><Icons.Eye /> Xem</button>
-                      <button onClick={() => { setEditForm(p); setEditingId(p.id); }} className="p-2 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition flex gap-2 items-center px-4"><Icons.Edit /> Sửa</button>
-                      <button onClick={() => { if(confirm('Xóa profile này?')) save(profiles.filter(x => x.id !== p.id)); }} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"><Icons.Trash2 /></button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="mt-12 p-6 bg-blue-50 rounded-xl text-sm text-blue-800 border border-blue-100">
-                 <h4 className="font-bold mb-2 flex items-center gap-2"><Icons.AlertCircle /> Lưu ý quan trọng:</h4>
-                 <p>Dữ liệu bạn chỉnh sửa ở đây được lưu vào <strong>Trình duyệt (LocalStorage)</strong>. Nó sẽ hoạt động ngay lập tức trên thiết bị này.</p>
-                 <p className="mt-2">Để cập nhật vĩnh viễn cho tất cả mọi người:</p>
-                 <ul className="list-disc pl-5 mt-1">
-                    <li>Vào chế độ <strong>Sửa</strong> -> bấm <strong>Tải Website (.html)</strong> để tải file code mới về máy -> Upload đè lên host.</li>
-                    <li>Hoặc bấm <strong>Copy JSON</strong> -> Gửi đoạn mã đó cho kỹ thuật viên.</li>
-                 </ul>
-              </div>
-            </div>
-          </div>
-        );
-      };
+    function showImagePopup(url) {
+      const popup = document.getElementById("imagePopup");
+      document.getElementById("popupImage").src = url;
+      popup.style.display = "flex";
+    }
 
-      // --- MAIN HOME APP ---
-      const App = () => {
-        const [data] = useState(loadProfile());
-        const [lang, setLang] = useState('vi');
-        const [qrOpen, setQrOpen] = useState(false);
-        const [scanOpen, setScanOpen] = useState(false);
-        const [consultOpen, setConsultOpen] = useState(false);
-        const [activeQr, setActiveQr] = useState(null);
-
-        const t = data.content[lang];
-
-        const openQr = (url, title, desc) => { setActiveQr({url, title, desc}); setQrOpen(true); }
-
-        return (
-          <div className="min-h-screen bg-[#E5E5E5]">
-            <div className="container max-w-md mx-auto bg-[#B2F2BB] min-h-screen sm:min-h-[calc(100vh-40px)] sm:my-5 sm:rounded-[30px] shadow-2xl overflow-hidden flex flex-col relative">
-              
-              {/* NAV */}
-              <div className="bg-white/95 backdrop-blur z-30 flex items-center justify-between px-4 h-14 shadow-sm shrink-0 relative">
-                <div className="flex flex-1 justify-center gap-6 h-full">
-                   <button className="h-full flex flex-col justify-center px-2 text-sm font-bold uppercase text-[#8b004f] relative">
-                      <div className="flex items-center gap-2"><Icons.Home /> Home</div>
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-[#8b004f] rounded-t-full"></div>
-                   </button>
-                   <a href="project.html" className="h-full flex flex-col justify-center px-2 text-sm font-bold uppercase text-gray-400 hover:text-gray-600 transition-colors">
-                      <div className="flex items-center gap-2"><Icons.Briefcase /> Project</div>
-                   </a>
-                </div>
-                <div className="flex gap-2 absolute right-4">
-                   <button onClick={() => setLang('vi')} className={`w-7 h-5 rounded overflow-hidden transition-transform ${lang==='vi'?'ring-1 ring-green-500':'opacity-60'}`}><img src={data.assets.flagVi} className="w-full h-full object-cover"/></button>
-                   <button onClick={() => setLang('en')} className={`w-7 h-5 rounded overflow-hidden transition-transform ${lang==='en'?'ring-1 ring-green-500':'opacity-60'}`}><img src={data.assets.flagEn} className="w-full h-full object-cover"/></button>
-                </div>
-              </div>
-
-              {/* CONTENT */}
-              <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col">
-                <div className="w-full h-48 relative shrink-0">
-                  <img src={data.assets.cover} className="w-full h-full object-cover" />
-                  <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#B2F2BB] via-[#B2F2BB]/60 to-transparent"></div>
-                </div>
-
-                <div className="px-6 pb-6 text-center relative z-10 -mt-24 flex-1 animate-fade-in">
-                   {/* Avatar */}
-                   <div className="relative inline-block mb-2 group">
-                      <div className="w-[240px] h-[240px] rounded-full border-4 border-white shadow-2xl overflow-hidden mx-auto bg-gray-200 relative z-10">
-                         <img src={data.assets.avatar} className="w-full h-full object-cover" onClick={() => openQr(data.assets.avatar, t.title, '')}/>
-                      </div>
-                      <button onClick={() => openQr(data.qrImages.main, 'Personal QR')} className="absolute bottom-2 right-4 z-20 bg-white p-2 rounded-xl shadow-lg hover:scale-110 transition">
-                          <img src={data.qrImages.main} className="w-14 h-14 object-contain" />
-                          <div className="absolute -bottom-2 -right-2 bg-blue-600 text-white p-1 rounded-full"><Icons.ScanLine size={12}/></div>
-                      </button>
-                   </div>
-                   
-                   <h1 className="text-2xl font-bold text-gray-800 mt-4">{t.title}</h1>
-                   <p className="text-[#357] font-medium mb-6">{t.subtitle}</p>
-
-                   <a href={`tel:${data.phoneContact}`} className="flex items-center justify-center gap-3 w-full bg-[#8b004f] text-white py-3.5 px-6 rounded-full shadow-lg hover:bg-[#700040] transition font-bold text-lg mb-6">
-                      <Icons.Phone /> <span>{data.phoneContact}</span>
-                   </a>
-
-                   <div className="grid grid-cols-2 gap-4 mb-8">
-                      <button onClick={() => navigator.share ? navigator.share({title: t.title, url: window.location.href}) : alert('Copied!')} className="flex items-center justify-center gap-2 bg-gray-100/80 py-3 rounded-xl font-medium"><Icons.Share2 /> {t.share}</button>
-                      <button className="flex items-center justify-center gap-2 bg-gray-100/80 py-3 rounded-xl font-medium"><Icons.Download /> {t.saveContact}</button>
-                   </div>
-
-                   <div className="w-full rounded-2xl overflow-hidden shadow-lg mb-6 bg-black">
-                      <div className="relative pb-[56.25%] h-0">
-                        <iframe className="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/J0MAmvy7y8k?si=MqncRvvtpViXuCQT" allowFullScreen></iframe>
-                      </div>
-                   </div>
-
-                   <button onClick={() => setConsultOpen(true)} className="bg-[#0033cc] text-white px-8 py-3 rounded-xl font-bold shadow-lg w-full mb-6">{t.consultButton}</button>
-
-                   <div className="bg-white/60 backdrop-blur-md rounded-2xl p-6 text-left shadow-sm mb-6">
-                      <ul className="space-y-2 text-gray-800 text-sm">{t.description.map((l,i) => <li key={i} className="flex gap-2"><span className="text-green-600 font-bold">✓</span>{l}</li>)}</ul>
-                   </div>
-
-                   <div className="space-y-3 mb-8">
-                      {t.roles.map((role, idx) => (
-                        <div key={idx} className="flex items-center gap-3 bg-[#f0fff0] p-3 rounded-xl border border-green-100 shadow-sm">
-                          <img src={data.assets.roleIcon} className="w-10 h-10 rounded-full" />
-                          <span className="text-sm font-semibold text-gray-700 flex-1 text-left">{role}</span>
-                          <Icons.Link2 className="text-gray-400"/>
-                        </div>
-                      ))}
-                   </div>
-
-                   <div className="grid grid-cols-4 gap-y-6 gap-x-2 mb-20">
-                      {data.socialLinks.map(link => (
-                        <button key={link.id} onClick={() => link.qrImage ? openQr(link.qrImage, link.label) : window.open(link.href, '_blank')} className="flex flex-col items-center group">
-                           <div className="w-14 h-14 bg-white rounded-2xl shadow-md flex items-center justify-center mb-2 group-hover:scale-110 transition"><img src={link.iconUrl} className="w-10 h-10 object-contain"/></div>
-                           <span className="text-xs font-medium text-gray-700">{link.label}</span>
-                        </button>
-                      ))}
-                   </div>
-                </div>
-              </div>
-            </div>
-
-            <ImageModal isOpen={qrOpen} imageUrl={activeQr?.url} title={activeQr?.title} description={activeQr?.desc} onClose={() => setQrOpen(false)} onScanClick={() => setScanOpen(true)} />
-            <QRScannerModal isOpen={scanOpen} onClose={() => setScanOpen(false)} label={t.scanQr} />
-            <ConsultationModal isOpen={consultOpen} onClose={() => setConsultOpen(false)} translations={t.consultationForm} zaloLink={`https://zalo.me/${data.zaloContact}`} />
-          </div>
-        );
-      };
-
-      const root = ReactDOM.createRoot(document.getElementById('root'));
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('admin') === 'true') {
-        root.render(<Admin />);
-      } else {
-        root.render(<App />);
-      }
-    </script>
-  </body>
+    function closePopup() {
+      document.getElementById("imagePopup").style.display = "none";
+    }
+  </script>
+</body>
 </html>
