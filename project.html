@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#B2F2BB" />
+    <title>Dự Án - NCV Card</title>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { theme: { extend: { colors: { primary: '#B2F2BB', secondary: '#8b004f', accent: '#0033cc' } } } }
+    </script>
+    <style>
+      body { background-color: #E5E5E5; margin: 0; padding: 0; }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+
+      // --- ICONS ---
+      const Icons = {
+        Home: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+        Briefcase: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+        ChevronLeft: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m15 18-6-6 6-6"/></svg>,
+        Image: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+      };
+
+      // --- DATA (Duplicated for standalone file) ---
+      // --- CONFIG START ---
+      const DEFAULT_PROFILE = {
+  "id": "1763621700388",
+  "name": "Võ Ngọc Nhân",
+  "phoneContact": "+84903453808",
+  "zaloContact": "0903453808",
+  "assets": {
+    "avatar": "https://i.ibb.co/sSsbjNq/Jayden.jpg",
+    "avatarQr": "https://i.ibb.co/hJ8jKMK2/Jayden.jpg",
+    "cover": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+    "roleIcon": "https://i.ibb.co/VY0kfHdv/Logo-Nhon-My-700x700-2-150x150.png",
+    "flagVi": "https://flagcdn.com/w40/vn.png",
+    "flagEn": "https://flagcdn.com/w40/us.png"
+  },
+  "qrImages": {
+    "main": "https://i.ibb.co/hJ8jKMK2/Jayden.jpg",
+    "wechat": "https://i.ibb.co/CsQwSST7/Jayden-Wechat.jpg",
+    "whatsapp": "https://i.ibb.co/F4T66yKh/Jayden-Whatapps.jpg",
+    "vcb": "",
+    "tcb": "https://i.ibb.co/zVjxK9Jw/Jayden-tcb.jpg"
+  },
+  "socialLinks": [
+    {
+      "id": "zalo",
+      "label": "Zalo",
+      "iconUrl": "https://i.ibb.co/d4nRhVQV/Zalo.png",
+      "href": "https://zalo.me/0903453808"
+    },
+    {
+      "id": "whatsapp",
+      "label": "WhatsApp",
+      "iconUrl": "https://i.ibb.co/XxqRB3Qg/Whatsapp.png",
+      "href": "https://wa.me/",
+      "qrImage": "https://i.ibb.co/F4T66yKh/Jayden-Whatapps.jpg"
+    },
+    {
+      "id": "wechat",
+      "label": "WeChat",
+      "iconUrl": "https://i.ibb.co/Zz41gSrk/Wechat.png",
+      "href": "#",
+      "qrImage": "https://i.ibb.co/CsQwSST7/Jayden-Wechat.jpg"
+    },
+    {
+      "id": "email",
+      "label": "Email",
+      "iconUrl": "https://i.ibb.co/nqyMXyNM/Email.png",
+      "href": "mailto:jacky@longhoanglogistics.com"
+    },
+    {
+      "id": "map",
+      "label": "Địa Chỉ",
+      "iconUrl": "https://i.ibb.co/7dTZHSwV/Map.png",
+      "href": "https://maps.app.goo.gl/ZSVFYotTCuGWNQmW8"
+    },
+    {
+      "id": "website",
+      "label": "Website",
+      "iconUrl": "https://i.ibb.co/Gf69QR4R/Website.png",
+      "href": "https://www.longhoanglogistics.com"
+    },
+    {
+      "id": "profile",
+      "label": "Profile",
+      "iconUrl": "https://i.ibb.co/VY01h09d/Profile.png",
+      "href": "https://drive.google.com/file/d/1wyPCBaCLTiUx3aWMwIX3X1WryfnTL-Lp/view?usp=drive_link"
+    },
+    {
+      "id": "facebook",
+      "label": "Facebook",
+      "iconUrl": "https://i.ibb.co/67VF7N5R/Facebook.png",
+      "href": "https://www.facebook.com/"
+    },
+    {
+      "id": "tiktok",
+      "label": "TikTok",
+      "iconUrl": "https://i.ibb.co/cStFGVqG/Tiktok.png",
+      "href": "https://www.tiktok.com/"
+    },
+    {
+      "id": "instagram",
+      "label": "Instagram",
+      "iconUrl": "https://i.ibb.co/39gCrw9n/Instagram.png",
+      "href": "https://www.instagram.com/"
+    },
+    {
+      "id": "momo",
+      "label": "Momo",
+      "iconUrl": "https://i.ibb.co/KpRgSv04/Momo.png",
+      "href": "https://nhantien.momo.vn/"
+    },
+    {
+      "id": "tcb",
+      "label": "TCB",
+      "iconUrl": "https://i.ibb.co/FktVzW2z/Tcb.png",
+      "href": "#",
+      "qrImage": "https://i.ibb.co/zVjxK9Jw/Jayden-tcb.jpg"
+    }
+  ],
+  "projects": [
+    {
+      "id": "p1",
+      "title": "Vận chuyển siêu trường siêu trọng",
+      "thumbnail": "https://images.unsplash.com/photo-1605218427360-69603f64ec80?auto=format&fit=crop&w=800&q=80",
+      "description": "Dự án vận chuyển máy móc thiết bị hạng nặng cho nhà máy nhiệt điện. Đảm bảo an toàn tuyệt đối và đúng tiến độ.",
+      "images": [
+        "https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80"
+      ]
+    },
+    {
+      "id": "p2",
+      "title": "Air Freight - Hàng xuất khẩu",
+      "thumbnail": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
+      "description": "Xử lý lô hàng xuất khẩu bằng đường hàng không đi thị trường EU/US với thời gian gấp.",
+      "images": [
+        "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80"
+      ]
+    },
+    {
+      "id": "p3",
+      "title": "Kho bãi và phân phối",
+      "thumbnail": "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800&q=80",
+      "description": "Giải pháp kho bãi thông minh và hệ thống phân phối hàng hóa toàn quốc.",
+      "images": [
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80"
+      ]
+    }
+  ],
+  "content": {
+    "vi": {
+      "title": "Võ Ngọc Nhân",
+      "subtitle": "Overseas Sales",
+      "description": [
+        "Có kinh nghiệm ở vị trí Sales Overseas trong ngành logistics, phụ trách thị trường Trung Quốc, Ấn Độ và các tuyến khác.",
+        "Công việc bao gồm tìm kiếm khách hàng quốc tế, báo giá dịch vụ FCL/LCL, air freight, theo dõi lô hàng và phối hợp với bộ phận chứng từ – hiện trường để đảm bảo giao hàng đúng tiến độ."
+      ],
+      "consultButton": "Đăng Ký Tư Vấn",
+      "roles": [
+        "Overseas Sales – Công ty Long Hoàng Logistics"
+      ],
+      "saveContact": "Lưu Danh bạ",
+      "share": "Chia sẻ",
+      "scanQr": "Quét mã",
+      "close": "Đóng",
+      "projectsTitle": "Dự Án Tiêu Biểu",
+      "backToProjects": "Quay lại danh sách",
+      "consultationForm": {
+        "title": "Yêu Cầu Báo Giá",
+        "goodsType": "Loại Hàng hóa",
+        "pol": "Cảng đi (POL)",
+        "pod": "Cảng đến (POD)",
+        "volume": "Khối lượng (Volume)",
+        "submit": "Báo Giá Qua Zalo",
+        "alertCopied": "Nội dung đã được copy! Vui lòng dán vào cuộc trò chuyện Zalo."
+      }
+    },
+    "en": {
+      "title": "Mr. Jayden",
+      "subtitle": "Overseas Sales",
+      "description": [
+        "Experience as an Overseas Sales Representative in the logistics industry, responsible for the Chinese, Indian, and other trade lanes.",
+        "Responsibilities included sourcing international clients, quoting FCL/LCL and air freight services, tracking shipments, and coordinating with the documentation and operations teams to ensure on-time delivery."
+      ],
+      "consultButton": "Register for Consultation",
+      "roles": [
+        "Overseas Sales – Công ty Long Hoàng Logistics"
+      ],
+      "saveContact": "Save Contact",
+      "share": "Share",
+      "scanQr": "Scan QR",
+      "close": "Close",
+      "projectsTitle": "Featured Projects",
+      "backToProjects": "Back to Projects",
+      "consultationForm": {
+        "title": "Request Quotation",
+        "goodsType": "Type of Goods",
+        "pol": "Port of Loading",
+        "pod": "Port of Discharge",
+        "volume": "Volume",
+        "submit": "Get Quote via Zalo",
+        "alertCopied": "Content copied! Please paste into Zalo chat."
+      }
+    }
+  }
+};
+      // --- CONFIG END ---
+
+      const loadProfile = () => {
+        try {
+          const stored = localStorage.getItem('ncv_cards_db');
+          if (stored) {
+            const profiles = JSON.parse(stored);
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (id) return profiles.find(p => p.id === id) || DEFAULT_PROFILE;
+            return profiles[0] || DEFAULT_PROFILE;
+          }
+        } catch (e) {}
+        return DEFAULT_PROFILE;
+      };
+
+      // --- PROJECTS APP ---
+      const App = () => {
+        const [data] = useState(loadProfile());
+        const [lang, setLang] = useState('vi');
+        const [selectedProject, setSelectedProject] = useState(null);
+
+        const t = data.content[lang];
+
+        const renderProjects = () => {
+          if (selectedProject) {
+            return (
+              <div className="animate-slide-up text-left pt-4 px-6 pb-24">
+                <button onClick={() => setSelectedProject(null)} className="flex items-center text-gray-600 mb-4 hover:text-[#0033cc] transition bg-white/50 w-fit px-3 py-1.5 rounded-full backdrop-blur-sm">
+                  <Icons.ChevronLeft /> <span className="font-medium ml-1">{t.backToProjects}</span>
+                </button>
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">{selectedProject.title}</h2>
+                <div className="w-full h-64 rounded-2xl overflow-hidden shadow-md mb-6">
+                  <img src={selectedProject.thumbnail} className="w-full h-full object-cover" />
+                </div>
+                <div className="bg-white/80 backdrop-blur p-5 rounded-xl border border-gray-100 shadow-sm mb-6">
+                   <p className="text-gray-700 whitespace-pre-line">{selectedProject.description}</p>
+                </div>
+                <div className="space-y-4">
+                  <h3 className="font-bold text-gray-800 flex items-center gap-2"><Icons.Image /> Gallery</h3>
+                  {selectedProject.images?.map((img, i) => (
+                    <div key={i} className="rounded-xl overflow-hidden shadow-sm"><img src={img} className="w-full h-auto" /></div>
+                  ))}
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div className="px-6 pb-24 pt-4 animate-fade-in">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">{t.projectsTitle}</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {data.projects && data.projects.map((proj) => (
+                  <button key={proj.id} onClick={() => setSelectedProject(proj)} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition-all group text-left flex flex-col h-full">
+                    <div className="aspect-square w-full overflow-hidden"><img src={proj.thumbnail} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
+                    <div className="p-3 flex-1 flex flex-col justify-between">
+                       <h3 className="font-bold text-gray-800 text-sm line-clamp-2 mb-1">{proj.title}</h3>
+                       <div className="text-xs text-gray-500 mt-auto pt-2 border-t flex items-center gap-1">Xem chi tiết</div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        };
+
+        return (
+          <div className="min-h-screen bg-[#E5E5E5]">
+            <div className="container max-w-md mx-auto bg-[#B2F2BB] min-h-screen sm:min-h-[calc(100vh-40px)] sm:my-5 sm:rounded-[30px] shadow-2xl overflow-hidden flex flex-col relative">
+              
+              {/* NAV */}
+              <div className="bg-white/95 backdrop-blur z-30 flex items-center justify-between px-4 h-14 shadow-sm shrink-0 relative">
+                <div className="flex flex-1 justify-center gap-6 h-full">
+                   <a href="index.html" className="h-full flex flex-col justify-center px-2 text-sm font-bold uppercase text-gray-400 hover:text-gray-600 transition-colors">
+                      <div className="flex items-center gap-2"><Icons.Home /> Home</div>
+                   </a>
+                   <button className="h-full flex flex-col justify-center px-2 text-sm font-bold uppercase text-[#8b004f] relative">
+                      <div className="flex items-center gap-2"><Icons.Briefcase /> Project</div>
+                      <div className="absolute bottom-0 left-0 w-full h-1 bg-[#8b004f] rounded-t-full"></div>
+                   </button>
+                </div>
+                <div className="flex gap-2 absolute right-4">
+                   <button onClick={() => setLang('vi')} className={`w-7 h-5 rounded overflow-hidden transition-transform ${lang==='vi'?'ring-1 ring-green-500':'opacity-60'}`}><img src={data.assets.flagVi} className="w-full h-full object-cover"/></button>
+                   <button onClick={() => setLang('en')} className={`w-7 h-5 rounded overflow-hidden transition-transform ${lang==='en'?'ring-1 ring-green-500':'opacity-60'}`}><img src={data.assets.flagEn} className="w-full h-full object-cover"/></button>
+                </div>
+              </div>
+
+              {/* CONTENT */}
+              <div className="flex-1 overflow-y-auto no-scrollbar flex flex-col">
+                <div className="w-full h-48 relative shrink-0">
+                  <img src={data.assets.cover} className="w-full h-full object-cover" />
+                  <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#B2F2BB] via-[#B2F2BB]/60 to-transparent"></div>
+                </div>
+                <div className="relative z-10 -mt-24 flex-1">
+                  {renderProjects()}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
